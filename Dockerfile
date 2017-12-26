@@ -12,8 +12,6 @@ ENV ANDROID_SDK_TOOLS_VERSION="3859397"
 # Get the latest version from https://developer.android.com/ndk/downloads/index.html
 ENV ANDROID_NDK_VERSION="15c"
 
-# nodejs version
-ENV NODE_VERSION="8.x"
 
 # Set locale
 ENV LANG="en_US.UTF-8" \
@@ -59,29 +57,13 @@ RUN apt-get update -qq > /dev/null && \
         openjdk-8-jdk \
         openssh-client \
         pkg-config \
-        python-software-properties \
-        ruby-full \
         software-properties-common \
         unzip \
         wget \
         zip \
         zlib1g-dev > /dev/null && \
-    echo "installing nodejs, npm, cordova, ionic, react-native" && \
-    curl -sL -k https://deb.nodesource.com/setup_${NODE_VERSION} \
-        | bash - > /dev/null && \
-    apt-get install -qq nodejs > /dev/null && \
-    apt-get clean > /dev/null && \
-    rm -rf /var/lib/apt/lists/ && \
-    npm install --quiet -g npm > /dev/null && \
-    npm install --quiet -g \
-        bower cordova eslint gulp \
-        ionic jshint karma-cli mocha \
-        node-gyp npm-check-updates \
-        react-native-cli > /dev/null && \
-    npm cache clean --force > /dev/null && \
-    rm -rf /tmp/* /var/tmp/* && \
-    echo "installing fastlane" && \
-    gem install fastlane --quiet --no-document > /dev/null
+    #echo "installing fastlane" && \
+    #gem install fastlane --quiet --no-document > /dev/null
 
 # Install Android SDK
 RUN echo "installing sdk tools" && \
@@ -106,15 +88,6 @@ RUN echo "installing sdk tools" && \
     echo "installing platforms" && \
     yes | "$ANDROID_HOME"/tools/bin/sdkmanager \
         "platforms;android-26" \
-        "platforms;android-25" \
-        "platforms;android-24" \
-        "platforms;android-23" \
-        "platforms;android-22" \
-        "platforms;android-21" \
-        "platforms;android-20" \
-        "platforms;android-19" \
-        "platforms;android-18" \
-        "platforms;android-17" \
         "platforms;android-16" && \
     echo "installing platform tools " && \
     yes | "$ANDROID_HOME"/tools/bin/sdkmanager \
@@ -122,18 +95,10 @@ RUN echo "installing sdk tools" && \
     echo "installing build tools " && \
     yes | "$ANDROID_HOME"/tools/bin/sdkmanager \
         "build-tools;26.0.2" "build-tools;26.0.1" "build-tools;26.0.0" \
-        "build-tools;25.0.3" "build-tools;25.0.2" \
-        "build-tools;25.0.1" "build-tools;25.0.0" \
-        "build-tools;24.0.3" "build-tools;24.0.2" \
         "build-tools;24.0.1" "build-tools;24.0.0" && \
     echo "installing build tools " && \
     yes | "$ANDROID_HOME"/tools/bin/sdkmanager \
         "build-tools;23.0.3" "build-tools;23.0.2" "build-tools;23.0.1" \
-        "build-tools;22.0.1" \
-        "build-tools;21.1.2" \
-        "build-tools;20.0.0" \
-        "build-tools;19.1.0" \
-        "build-tools;18.1.1" \
         "build-tools;17.0.0" && \
     echo "installing extras " && \
     yes | "$ANDROID_HOME"/tools/bin/sdkmanager \
